@@ -5,6 +5,7 @@ from pathlib import Path
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+from utils.boundary import estimate_boundary_mass
 
 ROOT = PROJECT_ROOT
 DATA = PROJECT_ROOT / "examples/toy_boundary_features.csv"
@@ -37,7 +38,7 @@ predicted_positive_mass = float(np.mean(dist >= 0))
 class_balance = min(predicted_positive_mass, 1.0 - predicted_positive_mass)
 if class_balance <= 0:
     raise RuntimeError("The diagnostic pool must occupy both predicted classes")
-psi_hat = tube_mass / (EPS * class_balance)
+psi_hat = estimate_boundary_mass(dist, EPS)
 
 print(f"demo epsilon: {EPS:.3f}")
 print(f"diagnostic tube mass: {tube_mass:.4f}")

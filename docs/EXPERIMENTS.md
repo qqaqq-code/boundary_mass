@@ -51,6 +51,31 @@ python run.py pilot_refitting --output-dir outputs/selection -- --n-seeds 5 --n-
 
 `--raw-metrics` and `--selections` accept previously computed experiment outputs for statistical aggregation.
 
+## Score conventions
+
+`utils.boundary.estimate_boundary_mass` implements the paper's two-sided binary coefficient. For signed distance `s` and predicted-class balance `beta`, the hard score is `mean(abs(s) <= epsilon) / (epsilon * beta)`. Its Gaussian version is `2 * mean(phi(s / epsilon)) / (epsilon * beta)`, where `phi` is the standard normal density.
+
+The binary backbone-selection, acquisition, and pilot-refitting tables use one-sided Gaussian surface-density scores and the smaller observed label frequency `alpha_y`. Their kernel score is `mean(phi(s / epsilon)) / (epsilon * alpha_y)`; the companion hard score divides tube probability by `2 * epsilon * alpha_y`. Multiplying either by `2 * alpha_y / beta` gives the corresponding two-sided, predicted-balance score. Regression and policy results use the scores produced by their respective experiment entry points.
+
+Multiclass comparison uses class-versus-leading-rival distances and a top-two interface gate. End-to-end monitoring averages classwise hard and triangular-kernel scores, using observed class frequencies with a 0.01 floor. The standalone MNIST training example uses the canonical two-sided helper with predicted-class balance at each checkpoint.
+
+## End-to-end boundary pressure
+
+`train_end_to_end.py` uses cross entropy plus a boundary-pressure proxy: half the hinge penalty on the true-class-versus-leading-rival logit margin, plus 0.05 times the head's Frobenius norm. The default margin threshold is 0.2. Held-out boundary-mass scores measure the resulting feature geometry.
+
+```bash
+python train_end_to_end.py --data-dir data --output-dir outputs/end_to_end \
+  --modes standard,boundary_pressure
+```
+
+The `boundary_pressure` mode accepts `--lambda-pressure` and `--pressure-lr`. The aliases `psieff`, `--lambda-psi`, and `--psi-lr` support existing command files. Monitoring readouts use test images; prospective backbone-selection diagnostics use independent held-out training features.
+
+For binary MNIST checkpoint measurements:
+
+```bash
+python -m experiments.mnist_training --data-dir data --output-dir outputs/mnist --epochs 10
+```
+
 ## Plotting
 
 After computing the corresponding experiments:

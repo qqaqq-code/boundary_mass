@@ -13,6 +13,7 @@ from torchvision.datasets import MNIST
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from utils.boundary import estimate_boundary_mass
 
 
 class BinaryCNN(nn.Module):
@@ -49,8 +50,7 @@ def main():
     train=DataLoader(datasets[0],batch_size=64,shuffle=True)
     test=DataLoader(datasets[1],batch_size=512,shuffle=False)
     experiment_ids=torch.randperm(len(datasets[1]),generator=torch.Generator().manual_seed(args.seed))[:512]
-    ax,ay=[v[experiment_ids].to(device) for v in datasets[1].tensors]
-    beta=min(ay.float().mean().item(),1-ay.float().mean().item())
+    ax=datasets[1].tensors[0][experiment_ids].to(device)
     model=BinaryCNN().to(device)
     optimizer=torch.optim.Adam(model.parameters(),lr=1e-3)
     rows=[]
@@ -73,8 +73,9 @@ def main():
             dist_logit=gap/np.sqrt(2.)
             row={'epoch':epoch,'train_accuracy':train_correct/len(datasets[0]),'accuracy':correct/len(datasets[1]),'test_error':1-correct/len(datasets[1])}
             for name,dist in [('feature',dist_feature),('logit',dist_logit)]:
-                row['psi_hard_'+name]=float((dist.abs()<=args.eps).float().mean().item()/(args.eps*beta))
-                row['psi_kernel_'+name]=float(torch.exp(-.5*(dist/args.eps)**2).mean().item()/(args.eps*np.sqrt(2*np.pi)*beta))
+                distances=dist.cpu().numpy()
+                row['psi_hard_'+name]=estimate_boundary_mass(distances,args.eps)
+                row['psi_kernel_'+name]=estimate_boundary_mass(distances,args.eps,kernel='gaussian')
             rows.append(row)
             print(json.dumps(row),flush=True)
     with (args.output_dir/'epochs.csv').open('w') as f:
@@ -86,7 +87,7 @@ def main():
             correlations[metric+'_vs_'+target]=float(np.corrcoef(a,b)[0,1]) if a.std()>0 and b.std()>0 else None
     summary={
              'model_settings':{'digits':[3,5],'conv_filters':[32,64],'fc_units':128,'optimizer':'Adam','lr':1e-3,'batch_size':64,'experiment_test_examples':512,'epochs_shown_in_figure':10},
-             'settings':{'seed':args.seed,'epochs':args.epochs,'eps':args.eps,'kernel_size':3,'padding':1,'pooling':'2x2 after each conv','input_normalization':'[0,1]','fixed_test_experiment_subset':True,'class_balance':'true labels'},
+             'settings':{'seed':args.seed,'epochs':args.epochs,'eps':args.eps,'kernel_size':3,'padding':1,'pooling':'2x2 after each conv','input_normalization':'[0,1]','fixed_test_experiment_subset':True,'class_balance':'predicted classes','boundary_coefficient':'two-sided'},
              'correlations':correlations,'final':rows[-1]}
     (args.output_dir/'summary.json').write_text(json.dumps(summary,indent=2))
     torch.save({'model_state':model.state_dict(),'args':vars(args)},args.output_dir/'last.pt')

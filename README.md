@@ -10,7 +10,7 @@ Shanghai University · *Equal contribution
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](#getting-started)
 [![License](https://img.shields.io/badge/License-MIT-4C7A52?style=for-the-badge)](LICENSE)
 
-[Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md)
+[Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md)
 
 </div>
 
@@ -31,6 +31,8 @@ Shanghai University · *Equal contribution
 2. Compute signed distances on independent diagnostic features while keeping the probe fixed.
 3. Normalize tube membership by tube width and predicted-class balance.
 4. Compare candidates in the conventional top-2 shortlist.
+
+![Boundary-normal pushforward mechanism](figures/mechanism.png)
 
 <a id="getting-started"></a>
 ## ✨ Getting Started
@@ -63,15 +65,14 @@ For standardized diagnostic features `Z`, a fitted binary head `(w, b)`, and a p
 
 ```python
 import numpy as np
+from utils.boundary import estimate_boundary_mass
 
 signed_distance = (Z @ w + b) / np.linalg.norm(w)
-tube_mass = np.mean(np.abs(signed_distance) <= epsilon)
-positive_mass = np.mean(signed_distance >= 0)
-class_balance = min(positive_mass, 1.0 - positive_mass)
-psi_hat = tube_mass / (epsilon * class_balance)
+psi_hat = estimate_boundary_mass(signed_distance, epsilon)
+psi_kernel = estimate_boundary_mass(signed_distance, epsilon, kernel="gaussian")
 ```
 
-Use a fitted head with a positive normal norm and diagnostic samples covering both predicted classes. Binary scoring costs **O(Nd)**; C-class OvR scoring costs **O(NCd)**.
+Use a fitted head with a positive normal norm and diagnostic samples covering both predicted classes. Binary scoring costs **O(Nd)**; C-class OvR scoring costs **O(NCd)**. Both estimates use the two-sided boundary coefficient and predicted-class balance. The [experiment guide](docs/EXPERIMENTS.md#score-conventions) gives the score conventions used by each experiment.
 
 ### Synthetic geometry
 

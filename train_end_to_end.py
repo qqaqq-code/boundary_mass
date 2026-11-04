@@ -113,7 +113,7 @@ def build_model(arch: str, num_classes: int = 100) -> nn.Module:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="End-to-end psi experiment plus downstream low-label probe."
+        description="End-to-end boundary-pressure experiment and downstream low-label probe."
     )
     parser.add_argument("--data-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -124,15 +124,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--arch", type=str, default="compact", choices=["compact", "resnet18"]
     )
-    parser.add_argument("--modes", type=str, default="standard,weight_decay,psieff")
+    parser.add_argument("--modes", type=str, default="standard,weight_decay,boundary_pressure")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--eval-batch-size", type=int, default=256)
     parser.add_argument("--probe-epochs", type=int, default=160)
     parser.add_argument("--probe-budgets", type=str, default="5,10,20,50")
     parser.add_argument("--probe-seeds", type=str, default="42,43,44")
     parser.add_argument("--lr", type=float, default=3e-3)
-    parser.add_argument("--psi-lr", type=float, default=3.5e-3)
-    parser.add_argument("--lambda-psi", type=float, default=0.12)
+    parser.add_argument("--pressure-lr", "--psi-lr", dest="psi_lr", type=float, default=3.5e-3)
+    parser.add_argument("--lambda-pressure", "--lambda-psi", dest="lambda_psi", type=float, default=0.12)
     parser.add_argument("--lambda-margin", type=float, default=0.1)
     parser.add_argument("--lambda-entropy", type=float, default=0.01)
     parser.add_argument("--weight-decay", type=float, default=5e-4)
@@ -206,13 +206,13 @@ def make_loader(
     )
 
 
-def compute_psi_surrogate_loss(
-    features: torch.Tensor,
+def compute_boundary_pressure_loss(
     logits: torch.Tensor,
     labels: torch.Tensor,
     weight: torch.Tensor,
     margin_eps: float = 0.2,
 ) -> torch.Tensor:
+    """Apply true-class-versus-rival margin pressure and a head-norm penalty."""
     correct_logits = logits.gather(1, labels.unsqueeze(1)).squeeze(1)
     masked_logits = logits.masked_fill(
         F.one_hot(labels, num_classes=logits.shape[1]).bool(), -torch.inf
@@ -366,7 +366,7 @@ def train_mode(
     model = build_model(args.arch, num_classes=args.num_classes)
     model.load_state_dict(copy.deepcopy(initial_state))
     model.to(device)
-    if mode == "psieff":
+    if mode in {"boundary_pressure", "psieff"}:
         optimizer = optim.SGD(
             model.parameters(), lr=args.psi_lr, momentum=0.9, weight_decay=0.0
         )
@@ -405,11 +405,11 @@ def train_mode(
             images = images.to(device, non_blocking=True)
             targets = targets.to(device, non_blocking=True)
             optimizer.zero_grad(set_to_none=True)
-            if mode == "psieff":
-                features, logits = model.get_features_and_logits(images)
+            if mode in {"boundary_pressure", "psieff"}:
+                _, logits = model.get_features_and_logits(images)
                 ce = criterion(logits, targets)
-                reg = compute_psi_surrogate_loss(
-                    features, logits, targets, model.classifier.weight
+                reg = compute_boundary_pressure_loss(
+                    logits, targets, model.classifier.weight
                 )
                 loss = ce + args.lambda_psi * reg
             elif mode == "margin":
