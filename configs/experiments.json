@@ -1,0 +1,661 @@
+{
+  "train_custom_probe": {
+    "purpose": "Train a linear probe on a learned CIFAR-100 encoder.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.train_custom_probe"
+  },
+  "train_cifar100_probe": {
+    "purpose": "Train frozen pretrained probes for CIFAR-100.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "train_cifar100_probe"
+  },
+  "train_encoder": {
+    "purpose": "Train CIFAR-100 encoders with boundary-mass regularization.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "train_encoder"
+  },
+  "train_imagefolder_probe": {
+    "purpose": "Train frozen pretrained probes on ImageFolder datasets.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "train_imagefolder_probe"
+  },
+  "evaluate_feature_noise": {
+    "purpose": "Evaluate fitted probes under feature perturbations.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.evaluate_feature_noise"
+  },
+  "evaluate_probes": {
+    "purpose": "Evaluate saved probes and summarize their prediction metrics.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.evaluate_probes"
+  },
+  "evaluate_image_shifts": {
+    "purpose": "Evaluate fitted probes under image distribution shifts.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "PIL",
+      "numpy",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.evaluate_image_shifts"
+  },
+  "sweep_pretrained_probes": {
+    "purpose": "Run a parameter sweep over pretrained CIFAR-100 probes.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.sweep_pretrained_probes"
+  },
+  "sweep_encoders": {
+    "purpose": "Run a parameter sweep over CIFAR-100 encoder training.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.sweep_encoders"
+  },
+  "sweep_imagefolder_probes": {
+    "purpose": "Run a parameter sweep over ImageFolder probes.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.sweep_imagefolder_probes"
+  },
+  "sweep_custom_probes": {
+    "purpose": "Run a parameter sweep over probes on learned CIFAR-100 encoders.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.sweep_custom_probes"
+  },
+  "summarize_boundary_utility": {
+    "purpose": "Collect per-epoch boundary-mass and utility measurements.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.summarize_boundary_utility"
+  },
+  "prepare_tiny_imagenet": {
+    "purpose": "Prepare Tiny-ImageNet images and class-organized validation folders.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.prepare_tiny_imagenet"
+  },
+  "summarize_training": {
+    "purpose": "Summarize recorded training runs.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.summarize_training"
+  },
+  "pushforward": {
+    "purpose": "Evaluate the boundary-mass pushforward law under controlled transformations.",
+    "inputs": "synthetic",
+    "argv": [
+      "--output-dir",
+      "{output}/results",
+      "--n-samples",
+      "2000000",
+      "--eps",
+      "0.015",
+      "--orientation-points",
+      "49",
+      "--eps-values",
+      "0.0025",
+      "0.005",
+      "0.01",
+      "0.02",
+      "0.04",
+      "0.08"
+    ],
+    "dependencies": [
+      "matplotlib",
+      "numpy"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.pushforward"
+  },
+  "sample_complexity": {
+    "purpose": "Measure synthetic learning curves across representation scales.",
+    "inputs": "synthetic",
+    "argv": [
+      "--output-dir",
+      "{output}/results",
+      "--scales",
+      "0.5",
+      "0.70710678",
+      "1",
+      "1.41421356",
+      "2",
+      "2.82842712",
+      "4",
+      "5.65685424",
+      "8",
+      "--n-train-values",
+      "50",
+      "100",
+      "200",
+      "400",
+      "800",
+      "1600",
+      "3200",
+      "6400"
+    ],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "sklearn"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.sample_complexity"
+  },
+  "boundary_utility": {
+    "purpose": "Plot the relationship between boundary mass and downstream utility.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas"
+    ],
+    "required_results": [
+      "boundary_utility/boundary_utility_epochs.csv"
+    ],
+    "supports_cli": false,
+    "module": "experiments.boundary_utility"
+  },
+  "proxy_comparison": {
+    "purpose": "Compare boundary mass with alternative representation metrics.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.proxy_comparison"
+  },
+  "utility_envelope": {
+    "purpose": "Compute the boundary-utility envelope.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "matplotlib"
+    ],
+    "required_results": [
+      "boundary_utility/boundary_utility_epochs.csv"
+    ],
+    "supports_cli": false,
+    "module": "experiments.utility_envelope"
+  },
+  "multibackbone_proxies": {
+    "purpose": "Compute alternative diagnostics across multiple backbones.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.multibackbone_proxies"
+  },
+  "estimator_cost": {
+    "purpose": "Measure estimator sensitivity and computational cost.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.estimator_cost"
+  },
+  "normal_scaling": {
+    "purpose": "Measure label demand under boundary-normal scaling.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.normal_scaling"
+  },
+  "feature_noise_control": {
+    "purpose": "Evaluate feature-noise controls for boundary-mass interventions.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.feature_noise_control"
+  },
+  "tangent_control": {
+    "purpose": "Measure label demand under boundary-tangent transformations.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.tangent_control"
+  },
+  "backbone_selection": {
+    "purpose": "Compare boundary mass and label budgets across frozen backbones.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.backbone_selection"
+  },
+  "estimator_reliability": {
+    "purpose": "Measure diagnostic-sampling reliability with a fixed fitted head.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.estimator_reliability"
+  },
+  "extract_cifar100_features": {
+    "purpose": "Extract CIFAR-100 features with DINO and SigLIP.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "modelscope",
+      "torch",
+      "torchvision",
+      "transformers"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.extract_cifar100_features"
+  },
+  "extract_cifar100_siglip": {
+    "purpose": "Extract CIFAR-100 SigLIP vision features.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "modelscope",
+      "torch",
+      "torchvision",
+      "transformers"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.extract_cifar100_siglip"
+  },
+  "transferability": {
+    "purpose": "Compare transferability baselines and incremental boundary-mass predictions.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.transferability"
+  },
+  "source_logits": {
+    "purpose": "Evaluate transferability diagnostics based on source-model logits.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch",
+      "torchvision"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.source_logits"
+  },
+  "tiny_imagenet": {
+    "purpose": "Evaluate binary label-budget prediction on Tiny-ImageNet.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "PIL",
+      "modelscope",
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch",
+      "torchvision",
+      "transformers"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.tiny_imagenet"
+  },
+  "extract_tiny_siglip": {
+    "purpose": "Extract Tiny-ImageNet SigLIP vision features.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "PIL",
+      "modelscope",
+      "torch",
+      "transformers"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.extract_tiny_siglip"
+  },
+  "pilot_selection": {
+    "purpose": "Evaluate backbone-selection policies from pilot labels.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.pilot_selection"
+  },
+  "paired_label_savings": {
+    "purpose": "Summarize paired label savings from pilot-label selection.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas"
+    ],
+    "required_results": [
+      "pilot_selection/pilot_policy_selection.csv",
+      "pilot_selection/pilot_policy_stats.json"
+    ],
+    "supports_cli": false,
+    "module": "experiments.paired_label_savings"
+  },
+  "pactran": {
+    "purpose": "Evaluate the linear PACTran comparison.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.pactran"
+  },
+  "near_tie_selection": {
+    "purpose": "Evaluate shortlist selection among closely matched backbones.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "sklearn"
+    ],
+    "required_results": [
+      "transferability/transferability_label_budget_table.csv",
+      "transferability/transferability_baseline_stats.json",
+      "tiny_imagenet/tiny_strict_label_budget_stats.json"
+    ],
+    "supports_cli": false,
+    "module": "experiments.near_tie_selection"
+  },
+  "estimator_robustness": {
+    "purpose": "Measure sensitivity to tube width and feature normalization.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.estimator_robustness"
+  },
+  "multiclass_aggregation": {
+    "purpose": "Compare OvR and interface aggregation on 16 five-way tasks.",
+    "inputs": "cached_features",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "experiments.multiclass_aggregation"
+  },
+  "multiclass_selection": {
+    "purpose": "Evaluate multiclass backbone-selection policies.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "sklearn"
+    ],
+    "required_results": [
+      "multiclass_selection/tiny_multiclass_label_budget_table.csv",
+      "tiny_imagenet/tiny_strict_label_budget_table.csv",
+      "near_tie_selection/near_tie_shortlist_stats.json"
+    ],
+    "supports_cli": false,
+    "module": "experiments.multiclass_selection"
+  },
+  "plot_results": {
+    "purpose": "Plot normal/tangent geometry and backbone-selection results.",
+    "inputs": "saved_results",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "pandas"
+    ],
+    "required_results": [
+      "normal_tangent/controlled_real_feature_learning_curves.csv",
+      "normal_tangent/controlled_real_feature_sample_difficulty.csv",
+      "normal_tangent/controlled_direction_sample_difficulty.csv",
+      "backbone_selection/strict_label_budget_table.csv",
+      "transferability/transferability_baseline_stats.json"
+    ],
+    "supports_cli": false,
+    "module": "plot_results"
+  },
+  "train_end_to_end": {
+    "purpose": "Train end-to-end interventions and downstream low-label probes.",
+    "inputs": "training_data",
+    "argv": [],
+    "dependencies": [
+      "numpy",
+      "torch",
+      "torchvision",
+      "tqdm"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "train_end_to_end"
+  },
+  "demo": {
+    "purpose": "Run a small boundary-mass example with bundled features.",
+    "inputs": "demo",
+    "argv": [],
+    "dependencies": [
+      "matplotlib",
+      "numpy"
+    ],
+    "required_results": [],
+    "supports_cli": false,
+    "module": "demo"
+  },
+  "multiclass_comparison": {
+    "purpose": "Compare four multiclass boundary estimators.",
+    "inputs": "cached_features",
+    "argv": [
+      "--output-dir",
+      "{output}/results/multiclass_comparison"
+    ],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.multiclass_comparison"
+  },
+  "acquisition": {
+    "purpose": "Compare three label-acquisition policies.",
+    "inputs": "cached_features",
+    "argv": [
+      "--output-dir",
+      "{output}/results/acquisition"
+    ],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.acquisition"
+  },
+  "pilot_refitting": {
+    "purpose": "Measure pilot-label refitting stability.",
+    "inputs": "cached_features",
+    "argv": [
+      "--output-dir",
+      "{output}/results/pilot_refitting"
+    ],
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy",
+      "sklearn",
+      "torch"
+    ],
+    "required_results": [],
+    "supports_cli": true,
+    "module": "experiments.pilot_refitting"
+  }
+}

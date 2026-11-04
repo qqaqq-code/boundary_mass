@@ -1,0 +1,3 @@
+experiment: synthetic_pushforward_validation
+maps: 74
+outputs: [pushforward_scatter, anisotropy_sweep, epsilon_convergence, orientation_curve]

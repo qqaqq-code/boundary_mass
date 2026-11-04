@@ -1,0 +1,3 @@
+experiment: multiclass_aggregation_stress_test
+aggregations: [one_vs_rest, interface_counted]
+readout: saturation_and_policy_behavior

@@ -1,0 +1,9 @@
+model: resnet18
+dataset: cifar100
+training: end_to_end
+optimizer: sgd
+learning_rate: 0.1
+weight_decay: 5.0e-4
+epochs: 120
+regularizers: [standard, weight_decay, margin, entropy, boundary_mass]
+boundary_mass_lambda_grid: [0.06, 0.12, 0.24]

@@ -1,0 +1,5 @@
+model: dino_vit_b16
+primary_method_reference: caron2021emerging
+checkpoint_identifier: AI-ModelScope/dino-vitb16
+feature_setting: frozen
+head: linear_probe

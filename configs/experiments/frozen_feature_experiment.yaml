@@ -1,0 +1,6 @@
+experiment: frozen_feature_label_budget_experiment
+datasets: [cifar100, tiny_imagenet]
+head: linear_probe
+diagnostic_split: heldout_training_features
+test_labels: evaluation_only
+label_budget_target: 90_percent_full_shot

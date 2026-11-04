@@ -1,0 +1,5 @@
+model: siglip_base_patch16_224
+primary_method_reference: zhai2023sigmoid
+checkpoint_identifier: AI-ModelScope/siglip-base-patch16-224
+feature_setting: frozen
+head: linear_probe

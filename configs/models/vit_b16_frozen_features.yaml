@@ -1,0 +1,5 @@
+model: vit_b16
+pretraining: imagenet
+feature_setting: frozen
+head: linear_probe
+feature_preprocessing: standardize_train_split

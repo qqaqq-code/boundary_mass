@@ -1,0 +1,8 @@
+-r requirements.txt
+torch==2.5.1
+torchvision==0.20.1
+transformers==4.57.6
+timm
+tqdm
+PyYAML
+modelscope
