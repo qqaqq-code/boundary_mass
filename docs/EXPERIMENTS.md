@@ -51,13 +51,40 @@ python run.py pilot_refitting --output-dir outputs/selection -- --n-seeds 5 --n-
 
 `--raw-metrics` and `--selections` accept previously computed experiment outputs for statistical aggregation.
 
-## Score conventions
+## Boundary-mass estimation
 
-`utils.boundary.estimate_boundary_mass` implements the paper's two-sided binary coefficient. For signed distance `s` and predicted-class balance `beta`, the hard score is `mean(abs(s) <= epsilon) / (epsilon * beta)`. Its Gaussian version is `2 * mean(phi(s / epsilon)) / (epsilon * beta)`, where `phi` is the standard normal density.
+Gaussian weighting and tube counting estimate the signed-distance density at the learned boundary. For diagnostic signed distances `s`, bandwidth `epsilon`, and standard normal density `phi`, define:
 
-The binary backbone-selection, acquisition, and pilot-refitting tables use one-sided Gaussian surface-density scores and the smaller observed label frequency `alpha_y`. Their kernel score is `mean(phi(s / epsilon)) / (epsilon * alpha_y)`; the companion hard score divides tube probability by `2 * epsilon * alpha_y`. Multiplying either by `2 * alpha_y / beta` gives the corresponding two-sided, predicted-balance score. Regression and policy results use the scores produced by their respective experiment entry points.
+- `density = mean(phi(s / epsilon)) / epsilon`
+- `tube = mean(abs(s) <= epsilon)`
+- `alpha_y`: the smaller observed diagnostic-label frequency.
+- `beta`: the smaller predicted-class frequency, using `s >= 0` as the positive class.
 
-Multiclass comparison uses class-versus-leading-rival distances and a top-two interface gate. End-to-end monitoring averages classwise hard and triangular-kernel scores, using observed class frequencies with a 0.01 floor. The standalone MNIST training example uses the canonical two-sided helper with predicted-class balance at each checkpoint.
+`utils.boundary.binary_score_conventions` returns four estimates:
+
+| Output field | Estimate | Formula |
+|---|---|---|
+| `kernel_label` | Gaussian density normalized by observed class balance, `D_ker` | `density / alpha_y` |
+| `hard_label` | Tube density normalized by observed class balance, `D_hard` | `tube / (2 * epsilon * alpha_y)` |
+| `kernel_predicted` | Two-sided Gaussian coefficient with predicted-class balance | `2 * density / beta` |
+| `hard_predicted` | Two-sided tube coefficient with predicted-class balance | `tube / (epsilon * beta)` |
+
+The binary scaling, backbone-selection, acquisition, and pilot-refitting experiments use `D_ker`. Their CSV fields `psi_eff` and `log1p_psi` store `D_ker` and `log(1 + D_ker)`. Multiplication by `2 * alpha_y / beta` gives the corresponding two-sided coefficient for each fitted head. `utils.boundary.estimate_boundary_mass` computes the two-sided hard or Gaussian estimate using predicted-class balance.
+
+Multiclass comparison uses class-versus-leading-rival distances and a top-two interface gate. End-to-end monitoring averages classwise hard and triangular-kernel scores, using observed class frequencies with a 0.01 floor. The MNIST training example measures the two-sided coefficient with predicted-class balance during training.
+
+### Label-budget prediction and normal scaling
+
+Evaluate kernel and tube scores on the same fitted heads, diagnostic features, and bandwidths:
+
+```bash
+python -m experiments.score_conventions --mode scoring --n-pairs 40 --n-seeds 5
+python -m experiments.score_conventions --mode geometry
+```
+
+Scoring mode measures full-probe, pilot-refitting, and acquisition-initialization heads, writing the four estimates to `score_variants.csv`. Paper regressions add `log(1 + score)` to conventional diagnostics; the top-2 policy selects the lower-scoring backbone from the conventional shortlist. Acquisition correlations use seed-averaged log-scores and realized label budgets.
+
+Geometry mode measures transported and refitted heads under normal scaling. For scale factor `a`, a transported head satisfies `D_push(a, epsilon) = D_base(epsilon / a) / a`. Scaling the bandwidth to `a * epsilon` gives `D_base(epsilon) / a`, matching the inverse-normal-scale law of the population coefficient.
 
 ## End-to-end boundary pressure
 
@@ -81,12 +108,16 @@ python -m experiments.mnist_training --data-dir data --output-dir outputs/mnist 
 After computing the corresponding experiments:
 
 ```bash
-python run.py normal_scaling --output-dir outputs/selection
 python run.py tangent_control --output-dir outputs/selection
 python run.py plot_results --output-dir outputs/selection
 ```
 
-Figures use the normal/tangent curves, backbone budgets and transferability summary in the shared output directory.
+Both normal/tangent panels use `tangent_control`'s paired data. At each scale,
+the directions share label draws; the draws vary across scales. The standalone
+`normal_scaling` sweep uses a separate draw rule. Summarize Table 1 from the paired
+data with `python -m experiments.normal_scaling_tables --input PATH --output-dir DIR`.
+Figures also use the backbone budgets and transferability summary in the shared
+output directory.
 
 ## Additional entry points
 

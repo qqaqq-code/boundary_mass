@@ -310,8 +310,8 @@ def plot_pairwise(pair_rows: list[dict[str, float]]) -> None:
         axes[0].axhline(0, color="#333333", linewidth=0.8)
         axes[0].set_xticks(x)
         axes[0].set_xticklabels(labels, rotation=12)
-        axes[0].set_ylabel("budget change vs. non-psi pick")
-        axes[0].set_title("Use psi only as tie-breaker")
+        axes[0].set_ylabel("budget change vs. conventional pick")
+        axes[0].set_title(r"$D_{\rm ker}$ as a second-stage score")
         axes[1].bar(x, scores, color=["#4C78A8", "#72B7B2", "#F58518"], width=0.65)
         axes[1].errorbar(
             x,
@@ -326,7 +326,7 @@ def plot_pairwise(pair_rows: list[dict[str, float]]) -> None:
         axes[1].set_ylim(45, max(70, float(np.nanmax(scores + score_yerr[1]) + 5)))
         axes[1].set_xticks(x)
         axes[1].set_xticklabels(labels, rotation=12)
-        axes[1].set_ylabel("lower-psi win/tie score (%)")
+        axes[1].set_ylabel(r"lower-$D_{\rm ker}$ win/tie score (%)")
         axes[1].set_title("Pairwise boundary burden")
         fig.tight_layout()
         fig.savefig(FIG / "near_tie_selection_selection.png", dpi=220)

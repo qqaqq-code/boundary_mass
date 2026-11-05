@@ -72,7 +72,7 @@ psi_hat = estimate_boundary_mass(signed_distance, epsilon)
 psi_kernel = estimate_boundary_mass(signed_distance, epsilon, kernel="gaussian")
 ```
 
-Use a fitted head with a positive normal norm and diagnostic samples covering both predicted classes. Binary scoring costs **O(Nd)**; C-class OvR scoring costs **O(NCd)**. Both estimates use the two-sided boundary coefficient and predicted-class balance. The [experiment guide](docs/EXPERIMENTS.md#score-conventions) gives the score conventions used by each experiment.
+Use a fitted head with a positive normal norm and diagnostic samples covering both predicted classes. Binary scoring costs **O(Nd)**; C-class OvR scoring costs **O(NCd)**. Both estimates use the two-sided boundary coefficient and predicted-class balance. The [experiment guide](docs/EXPERIMENTS.md#boundary-mass-estimation) describes kernel and tube estimation, class normalization, and label-budget experiments.
 
 ### Synthetic geometry
 

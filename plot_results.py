@@ -57,15 +57,18 @@ def prettify(ax):
 def controlled_real_feature():
     curves = pd.read_csv(
         result_file(
-            "normal_tangent/controlled_real_feature_learning_curves.csv"
+            "normal_tangent/controlled_direction_learning_curves.csv"
         )
     )
     diff = pd.read_csv(
         result_file(
-            "normal_tangent/controlled_real_feature_sample_difficulty.csv"
+            "normal_tangent/controlled_direction_sample_difficulty.csv"
         )
     )
 
+    # Both Figure 4 panels and Table 1 use the same paired experiment.
+    curves = curves[curves.direction == "normal"].rename(columns={"scale": "normal_scale"})
+    diff = diff[diff.direction == "normal"].rename(columns={"scale": "normal_scale"})
     fig, axes = plt.subplots(1, 3, figsize=(10.8, 3.0), constrained_layout=True)
 
     ax = axes[0]
@@ -99,7 +102,7 @@ def controlled_real_feature():
             color=SCALE_COLORS.get(float(scale), None),
             label=f"s={scale:g}",
         )
-    ax.set_xlabel(r"$\log(1+\hat\psi_{\rm eff})$")
+    ax.set_xlabel(r"$\log(1+D_{\rm ker})$")
     ax.set_ylabel("AULC")
     ax.set_title("Boundary mass vs. AULC")
     prettify(ax)
@@ -115,7 +118,7 @@ def controlled_real_feature():
             linewidth=0.35,
             color=SCALE_COLORS.get(float(scale), None),
         )
-    ax.set_xlabel(r"$\log(1+\hat\psi_{\rm eff})$")
+    ax.set_xlabel(r"$\log(1+D_{\rm ker})$")
     ax.set_ylabel("labels to target")
     ax.set_title("Boundary mass vs. label budget")
     prettify(ax)
@@ -140,7 +143,7 @@ def direction_controls():
 
     fig, axes = plt.subplots(1, 3, figsize=(10.8, 2.65), constrained_layout=True)
     for ax, y, title, ylabel in [
-        (axes[0], "logpsi", "Tube coefficient", r"$\log(1+\hat\psi_{\rm eff})$"),
+        (axes[0], "logpsi", "Kernel boundary score", r"$\log(1+D_{\rm ker})$"),
         (axes[1], "aulc", "Low-shot AULC", "AULC"),
         (axes[2], "budget", "Target label budget", "labels to target"),
     ]:
@@ -203,7 +206,7 @@ def backbone_experiment():
             color=BACKBONE_COLORS.get(backbone, None),
             label=backbone,
         )
-    ax.set_xlabel(r"held-out train $\log(1+\hat\psi_{\rm eff})$")
+    ax.set_xlabel(r"held-out train $\log(1+D_{\rm ker})$")
     ax.set_ylabel("test label budget (spc)")
     ax.set_title("Boundary mass and label demand")
     ax.legend(
@@ -233,7 +236,7 @@ def backbone_experiment():
     ax.set_xticks([0, 0.05, 0.10, 0.15])
     for row, value in zip(y, x):
         ax.text(value + 0.003, row + 0.26, f"{value:.3f}", va="center", fontsize=8)
-    ax.set_xlabel(r"incremental $\Delta R^2$ from $\hat\psi$ (95% CI)")
+    ax.set_xlabel(r"incremental $\Delta R^2$ from $D_{\rm ker}$ (95% CI)")
     ax.set_title("Transferability controls")
     prettify(ax)
 
