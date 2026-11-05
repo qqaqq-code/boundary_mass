@@ -108,13 +108,13 @@ if not mode_eff.empty:
         color=[colors.get(m, "#777777") for m in mode_eff["mode"]],
     )
 axes[0].set_title("training trajectories")
-axes[1].set_title("final checkpoints by intervention")
+axes[1].set_title("final models by intervention")
 axes[2].set_title("BoundaryEfficiency")
 for ax in axes[:2]:
     ax.set_xlabel("log(1 + psi_eff)")
     ax.set_ylabel("utility")
 axes[2].set_ylabel("utility / log(1 + psi_eff)")
-axes[1].legend(frameon=False, fontsize=8)
+axes[1].legend(frameon=False, fontsize=8, loc="lower left")
 fig.tight_layout()
 fig.savefig(FIGURES_DIR / "fig10_boundary_utility.png", dpi=220)
 plt.close(fig)
