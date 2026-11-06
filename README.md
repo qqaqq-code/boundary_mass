@@ -10,8 +10,7 @@ Shanghai University · *Equal contribution
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](#getting-started)
 [![License](https://img.shields.io/badge/License-MIT-4C7A52?style=for-the-badge)](LICENSE)
 
-[Paper](https://github.com/qqaqq-code/BoundaryMass.pdf) · [Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md) · [Citation](#citation)
-
+[Paper](https://github.com/qqaqq-code/boundary_mass/blob/master/BoundaryMass.pdf) · [Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md) · [Citation](#citation)
 </div>
 
 ## 🎉 News
@@ -20,7 +19,7 @@ Shanghai University · *Equal contribution
 
 ## 🔗 Links
 
-- 📜 [Paper](https://github.com/qqaqq-code/BoundaryMass.pdf)
+- 📜 [Paper](https://github.com/qqaqq-code/blob/master/BoundaryMass.pdf)
 - 💻 [GitHub](https://github.com/qqaqq-code/boundary_mass)
 
 <a id="introduction"></a>
