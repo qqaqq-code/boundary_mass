@@ -19,7 +19,7 @@ Shanghai University · *Equal contribution
 
 ## 🔗 Links
 
-- 📜 [Paper](https://github.com/qqaqq-code/blob/master/BoundaryMass.pdf)
+- 📜 [Paper](https://github.com/qqaqq-code/boundary_mass/blob/master/BoundaryMass.pdf)
 - 💻 [GitHub](https://github.com/qqaqq-code/boundary_mass)
 
 <a id="introduction"></a>
