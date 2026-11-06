@@ -10,9 +10,18 @@ Shanghai University · *Equal contribution
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](#getting-started)
 [![License](https://img.shields.io/badge/License-MIT-4C7A52?style=for-the-badge)](LICENSE)
 
-[Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md)
+[Paper](BoundaryMass.pdf) · [Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md) · [Citation](#citation)
 
 </div>
+
+## 🎉 News
+
+- **[2026-11]** Our paper has been accepted to **NeurIPS 2026**. The paper and code are available below.
+
+## 🔗 Links
+
+- 📜 [Paper](BoundaryMass.pdf)
+- 💻 [GitHub](https://github.com/qqaqq-code/boundary_mass)
 
 <a id="introduction"></a>
 ## 📖 Introduction
@@ -144,6 +153,7 @@ Budgets and regrets use samples per class. Across five pilot-label draws, the co
 boundarymass/
 ├── README.md
 ├── LICENSE
+├── BoundaryMass.pdf
 ├── requirements.txt
 ├── requirements-train.txt
 ├── environment.yml
@@ -163,8 +173,22 @@ boundarymass/
 └── docs/                        # Data preparation and usage
 ```
 
-## 🌻 Acknowledgements
+<a id="citation"></a>
+## 🎈 Citation
 
-This work uses CIFAR-100, Tiny-ImageNet, PyTorch, and pretrained ResNet, ViT, DINO, and SigLIP models. We thank the dataset and model authors for their contributions.
+If you use this work, please cite our NeurIPS 2026 paper:
+
+```bibtex
+@inproceedings{zhang2026boundarymass,
+  title     = {Boundary Mass in Feature Space as a Label-Budget Diagnostic for Representations},
+  author    = {Siming Zhang and Zhehui Shen and Shijie Chen and Yansen Yu and Hang Yu},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2026}
+}
+```
+
+## 🌻 Acknowledges
+
+This work was supported by the National Key R&D Program of China (Grant No. 2025YFF0514701).
 
 Code is distributed under the [MIT License](LICENSE). Contact: [Hang Yu](mailto:yuhang@shu.edu.cn).

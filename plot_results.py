@@ -182,7 +182,7 @@ def backbone_experiment():
         )
     )
     inc = pd.DataFrame(stats["incremental"])
-    # These archived rows also appear in table11_transferability_controlled_regression.tex.
+    # Transferability baselines used in the paper.
     labels = {
         "LogME + H-score": "LogME + H-score",
         "LogME + H-score + TransRate": "+ TransRate",
@@ -223,20 +223,15 @@ def backbone_experiment():
     inc = inc.assign(label=inc["base"].map(labels))
     y = np.arange(len(inc))
     x = inc["delta_r2"].to_numpy()
-    lo = x - inc["delta_r2_ci_low"].to_numpy()
-    hi = inc["delta_r2_ci_high"].to_numpy() - x
     ax.barh(y, x, color=["#4C78A8"] * 3 + ["#C65D26"], alpha=0.92, height=0.6)
-    ax.errorbar(
-        x, y, xerr=[lo, hi], fmt="none", ecolor="#222222", elinewidth=1, capsize=2
-    )
     ax.set_yticks(y)
     ax.set_yticklabels(inc["label"])
     ax.invert_yaxis()
-    ax.set_xlim(0, 0.165)
-    ax.set_xticks([0, 0.05, 0.10, 0.15])
+    ax.set_xlim(0, 0.065)
+    ax.set_xticks([0, 0.02, 0.04, 0.06])
     for row, value in zip(y, x):
         ax.text(value + 0.003, row + 0.26, f"{value:.3f}", va="center", fontsize=8)
-    ax.set_xlabel(r"incremental $\Delta R^2$ from $D_{\rm ker}$ (95% CI)")
+    ax.set_xlabel(r"incremental $\Delta R^2$ from $D_{\rm ker}$")
     ax.set_title("Transferability controls")
     prettify(ax)
 

@@ -273,57 +273,17 @@ def plot_pairwise(pair_rows: list[dict[str, float]]) -> None:
         reductions = np.array(
             [row["budget_reduction_vs_baseline"] for row in pair_rows]
         )
-        yerr = np.array(
-            [
-                [
-                    row["budget_reduction_vs_baseline"]
-                    - row["budget_reduction_vs_baseline_ci"][0]
-                    for row in pair_rows
-                ],
-                [
-                    row["budget_reduction_vs_baseline_ci"][1]
-                    - row["budget_reduction_vs_baseline"]
-                    for row in pair_rows
-                ],
-            ]
-        )
         scores = 100 * np.array([row["lower_psi_win_score"] for row in pair_rows])
-        score_yerr = np.array(
-            [
-                [
-                    100
-                    * (row["lower_psi_win_score"] - row["lower_psi_win_score_ci"][0])
-                    for row in pair_rows
-                ],
-                [
-                    100
-                    * (row["lower_psi_win_score_ci"][1] - row["lower_psi_win_score"])
-                    for row in pair_rows
-                ],
-            ]
-        )
         fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.8))
         axes[0].bar(x, reductions, color=["#4C78A8", "#72B7B2", "#F58518"], width=0.65)
-        axes[0].errorbar(
-            x, reductions, yerr=yerr, fmt="none", color="black", capsize=3, linewidth=1
-        )
         axes[0].axhline(0, color="#333333", linewidth=0.8)
         axes[0].set_xticks(x)
         axes[0].set_xticklabels(labels, rotation=12)
         axes[0].set_ylabel("budget change vs. conventional pick")
         axes[0].set_title(r"$D_{\rm ker}$ as a second-stage score")
         axes[1].bar(x, scores, color=["#4C78A8", "#72B7B2", "#F58518"], width=0.65)
-        axes[1].errorbar(
-            x,
-            scores,
-            yerr=score_yerr,
-            fmt="none",
-            color="black",
-            capsize=3,
-            linewidth=1,
-        )
         axes[1].axhline(50, color="#333333", linestyle="--", linewidth=0.8)
-        axes[1].set_ylim(45, max(70, float(np.nanmax(scores + score_yerr[1]) + 5)))
+        axes[1].set_ylim(45, max(70, float(np.nanmax(scores) + 5)))
         axes[1].set_xticks(x)
         axes[1].set_xticklabels(labels, rotation=12)
         axes[1].set_ylabel(r"lower-$D_{\rm ker}$ win/tie score (%)")
