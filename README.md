@@ -10,7 +10,7 @@ Shanghai University · *Equal contribution
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](#getting-started)
 [![License](https://img.shields.io/badge/License-MIT-4C7A52?style=for-the-badge)](LICENSE)
 
-[Paper](BoundaryMass.pdf) · [Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md) · [Citation](#citation)
+[Paper](https://github.com/qqaqq-code/boundary_mass/blob/master/BoundaryMass.pdf) · [Code](https://github.com/qqaqq-code/boundary_mass) · [Introduction](#introduction) · [Getting Started](#getting-started) · [Usage](#usage) · [Results](#results) · [Experiments](docs/EXPERIMENTS.md) · [Citation](#citation)
 
 </div>
 
@@ -20,7 +20,7 @@ Shanghai University · *Equal contribution
 
 ## 🔗 Links
 
-- 📜 [Paper](BoundaryMass.pdf)
+- 📜 [Paper](https://github.com/qqaqq-code/boundary_mass/blob/master/BoundaryMass.pdf)
 - 💻 [GitHub](https://github.com/qqaqq-code/boundary_mass)
 
 <a id="introduction"></a>
@@ -179,7 +179,7 @@ boundarymass/
 If you use this work, please cite our NeurIPS 2026 paper:
 
 ```bibtex
-@inproceedings{zhang2026boundarymass,
+@inproceedings{zhangshen2026boundarymass,
   title     = {Boundary Mass in Feature Space as a Label-Budget Diagnostic for Representations},
   author    = {Siming Zhang and Zhehui Shen and Shijie Chen and Yansen Yu and Hang Yu},
   booktitle = {Advances in Neural Information Processing Systems},
